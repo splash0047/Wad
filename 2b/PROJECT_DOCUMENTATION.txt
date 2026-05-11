@@ -1,0 +1,440 @@
+================================================================================
+WAD PRACTICAL 2B: Docker Container Environment
+PROJECT DOCUMENTATION
+================================================================================
+
+SUBJECT: Web Application Development (WAD)
+PRACTICAL: 2B
+TOPIC: Create Docker Container Environment
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+1. Project Overview
+2. Project Structure
+3. Implementation Details
+4. Docker Components Explained
+5. How to Run the Project
+6. NVIDIA Docker Setup (Optional)
+7. Key Concepts
+8. Verification Steps
+
+================================================================================
+1. PROJECT OVERVIEW
+================================================================================
+
+This practical demonstrates the creation and management of Docker container
+environments. Docker is a platform that packages applications and their
+dependencies into standardized units called containers, ensuring consistent
+execution across different environments.
+
+Objectives:
+- Install and configure Docker Desktop on Windows
+- Understand Docker architecture (images, containers, volumes)
+- Create custom Docker images using Dockerfiles
+- Build and run containers from custom images
+- Use Docker Compose for multi-container orchestration
+- (Optional) Configure NVIDIA Docker for GPU-accelerated workloads
+
+================================================================================
+2. PROJECT STRUCTURE
+================================================================================
+
+The project directory contains the following files and folders:
+
+2b/                                    [Root Project Directory]
+|
+|-- docker-compose.yml                 Multi-container orchestration file
+|-- generate_docker_guide.py           Python script to generate the PDF guide
+|-- Docker_Container_Environment_Guide.pdf    Comprehensive implementation guide
+|-- README.txt                         Project readme with usage instructions
+|
+|-- my-docker-app/                     Sample Nginx web application
+|   |-- index.html                     Custom HTML page for web server
+|   |-- Dockerfile                     Instructions to build Nginx image
+|
+|-- node-app/                          Sample Node.js application
+    |-- app.js                         Simple Node.js application
+    |-- Dockerfile                     Instructions to build Node.js image
+
+================================================================================
+3. IMPLEMENTATION DETAILS
+================================================================================
+
+3.1 DOCKER-COMPOSE.YML
+----------------------------------------------------------------------
+File: docker-compose.yml
+
+This YAML file defines a multi-container application using Docker Compose.
+
+Services Defined:
+-----------------
+1. Web Service (Nginx)
+   - Image: nginx:alpine (lightweight Nginx on Alpine Linux)
+   - Port Mapping: 8080:80 (host port 8080 -> container port 80)
+   - Volume Mount: ./my-docker-app/index.html -> /usr/share/nginx/html/index.html
+   - Container Name: compose-web
+
+2. Database Service (MySQL)
+   - Image: mysql:8.0 (MySQL version 8.0)
+   - Environment Variables:
+     * MYSQL_ROOT_PASSWORD: rootpass
+     * MYSQL_DATABASE: testdb
+   - Port Mapping: 3306:3306 (host port 3306 -> container port 3306)
+   - Container Name: compose-db
+
+Volumes:
+--------
+   - db_data: Persistent storage for MySQL database data
+
+How It Works:
+-------------
+- Docker Compose reads this YAML file and creates networks automatically
+- Both containers run on the same Docker network and can communicate
+- The web container can reach the database using the service name 'db'
+- The volume 'db_data' persists MySQL data even after containers are stopped
+
+
+3.2 MY-DOCKER-APP (Nginx Application)
+----------------------------------------------------------------------
+This folder demonstrates a simple web application containerized with Nginx.
+
+Files:
+------
+A) index.html
+   - A styled HTML page with gradient background
+   - Displays "Hello from Docker Container!" message
+   - Shows "WAD Practical 2B" text
+   - Includes CSS styling for centered layout with rounded container
+
+B) Dockerfile
+   - FROM nginx:alpine - Uses lightweight Nginx base image
+   - COPY index.html /usr/share/nginx/html/ - Copies custom HTML
+   - EXPOSE 80 - Declares port 80 is used
+   - CMD ["nginx", "-g", "daemon off;"] - Starts Nginx in foreground
+
+
+3.3 NODE-APP (Node.js Application)
+----------------------------------------------------------------------
+This folder demonstrates a simple Node.js application containerized.
+
+Files:
+------
+A) app.js
+   - Simple console application
+   - Prints "Hello from Node.js inside a Docker container!"
+   - Prints "WAD Practical 2B - Docker Environment"
+
+B) Dockerfile
+   - FROM node:18-alpine - Uses Node.js 18 on Alpine Linux
+   - WORKDIR /app - Sets working directory
+   - COPY app.js /app/ - Copies application file
+   - CMD ["node", "app.js"] - Runs the application
+
+
+3.4 GENERATE_DOCKER_GUIDE.PY
+----------------------------------------------------------------------
+This Python script generates a comprehensive PDF guide for Docker setup.
+
+Features:
+---------
+- Uses FPDF library to create formatted PDF document
+- Custom methods for styling:
+  * chapter_title() - Blue headers with background fill
+  * section_title() - Bold section headers
+  * body_text() - Regular paragraph text
+  * code_block() - Monospace code with green text and grey background
+  * note_box() - Orange highlighted notes
+  * warning_box() - Red highlighted warnings
+
+Content Includes:
+-----------------
+1. Prerequisites and System Requirements
+2. Installing Docker Desktop on Windows
+3. Enabling WSL 2 Backend
+4. Basic Docker Commands
+5. Creating Dockerfiles
+6. Building and Running Containers
+7. Docker Compose Setup
+8. NVIDIA Container Toolkit Setup
+9. Hands-On Exercises
+10. Common Troubleshooting
+
+================================================================================
+4. DOCKER COMPONENTS EXPLAINED
+================================================================================
+
+4.1 KEY DOCKER CONCEPTS
+----------------------------------------------------------------------
+
+IMAGE:
+------
+- A read-only template with instructions to create a container
+- Base images like 'nginx:alpine', 'node:18-alpine' are downloaded from
+  Docker Hub (https://hub.docker.com/)
+- Images are layered and cached for efficiency
+
+CONTAINER:
+----------
+- A runnable instance of an image
+- Isolated environment with its own file system, network, and processes
+- Multiple containers can run from the same image
+
+DOCKERFILE:
+-----------
+- Text file containing instructions to build a Docker image
+- Each instruction creates a new layer in the image
+- Essential instructions:
+  * FROM - Base image
+  * COPY - Copy files from host to image
+  * RUN - Execute commands during build
+  * EXPOSE - Document port numbers
+  * CMD - Default command when container starts
+
+DOCKER COMPOSE:
+---------------
+- Tool for defining and running multi-container applications
+- Uses YAML files to configure services, networks, and volumes
+- Single command to start/stop entire application stack
+
+
+4.2 DOCKERFILE INSTRUCTIONS REFERENCE
+----------------------------------------------------------------------
+
+Common Instructions Used:
+--------------------------
+FROM        - Specifies the base image
+COPY        - Copies files from build context to image
+WORKDIR     - Sets the working directory
+RUN         - Executes commands during build (creates layers)
+EXPOSE      - Documents which ports the container listens on
+CMD         - Default command when container starts
+ENTRYPOINT  - Configures container to run as executable
+
+Layer Caching:
+--------------
+Docker caches each layer. If layers don't change between builds, they
+are reused, making builds faster. Order instructions from least to
+most frequently changing.
+
+
+4.3 DOCKER COMPOSE KEY CONCEPTS
+----------------------------------------------------------------------
+
+Services:
+---------
+- Each service maps to one container
+- Can specify image OR build context with Dockerfile
+- Services can scale with: docker-compose up --scale web=3
+
+Networks:
+---------
+- Docker Compose creates a default network for all services
+- Containers can communicate using service names as hostnames
+- Custom networks can be defined for isolation
+
+Volumes:
+--------
+- Mount host directories or named volumes into containers
+- Persist data beyond container lifecycle
+- Two types: bind mounts (host paths) and named volumes
+
+Environment Variables:
+----------------------
+- Set using 'environment' key in YAML
+- Secrets should use .env files (not committed to version control)
+
+
+================================================================================
+5. HOW TO RUN THE PROJECT
+================================================================================
+
+5.1 PREREQUISITES
+----------------------------------------------------------------------
+- Docker Desktop installed and running
+- WSL 2 enabled (recommended)
+- PowerShell or Command Prompt
+
+5.2 RUNNING THE NGINX APPLICATION
+----------------------------------------------------------------------
+Step 1: Navigate to my-docker-app directory
+        cd my-docker-app
+
+Step 2: Build the Docker image
+        docker build -t my-nginx-app .
+
+Step 3: Run the container
+        docker run -d -p 8080:80 --name web-container my-nginx-app
+
+Step 4: Test in browser
+        Open: http://localhost:8080
+
+Step 5: View logs (optional)
+        docker logs web-container
+
+Step 6: Cleanup
+        docker stop web-container
+        docker rm web-container
+        docker rmi my-nginx-app
+
+
+5.3 RUNNING THE NODE.JS APPLICATION
+----------------------------------------------------------------------
+Step 1: Navigate to node-app directory
+        cd node-app
+
+Step 2: Build the Docker image
+        docker build -t my-node-app .
+
+Step 3: Run the container
+        docker run --name node-container my-node-app
+
+Step 4: View output
+        docker logs node-container
+
+Step 5: Cleanup
+        docker rm node-container
+        docker rmi my-node-app
+
+
+5.4 RUNNING DOCKER COMPOSE STACK
+----------------------------------------------------------------------
+Step 1: Ensure index.html exists in my-docker-app folder
+
+Step 2: Start all services
+        docker-compose up -d
+
+Step 3: View running services
+        docker-compose ps
+
+Step 4: View logs
+        docker-compose logs
+
+Step 5: Stop all services
+        docker-compose down
+
+
+5.5 BUILDING THE PDF GUIDE
+----------------------------------------------------------------------
+Step 1: Install fpdf2 library
+        pip install fpdf2
+
+Step 2: Run the script
+        python generate_docker_guide.py
+
+Step 3: Open the generated PDF
+        Docker_Container_Environment_Guide.pdf
+
+================================================================================
+6. NVIDIA DOCKER SETUP (OPTIONAL)
+================================================================================
+
+For GPU-accelerated containers (machine learning, AI, etc.)
+
+Requirements:
+-------------
+- NVIDIA GPU with compute capability 5.0+
+- Updated NVIDIA drivers
+- WSL 2 backend (NOT Hyper-V)
+- Linux containers enabled in Docker Desktop
+
+Setup Steps:
+------------
+1. Verify NVIDIA GPU:
+   nvidia-smi
+
+2. Install NVIDIA Container Toolkit in WSL:
+   distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+   curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+   curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+   sudo apt-get update
+   sudo apt-get install -y nvidia-docker2
+   sudo systemctl restart docker
+
+3. Test GPU access:
+   docker run --rm --gpus all nvidia/cuda:12.0-base nvidia-smi
+
+Note: NVIDIA Docker requires Linux containers and WSL 2 backend.
+It does NOT work with Windows containers.
+
+================================================================================
+7. KEY CONCEPTS COVERED
+================================================================================
+
+This practical covers the following Docker concepts:
+
+Container Lifecycle:
+- Pull images (docker pull)
+- Build images (docker build)
+- Run containers (docker run)
+- Stop containers (docker stop)
+- Remove containers (docker rm)
+- Remove images (docker rmi)
+
+Networking:
+- Port mapping (-p host:container)
+- Container-to-container communication
+- Service discovery via service names
+
+Data Persistence:
+- Volumes for persistent data
+- Bind mounts for development
+- Volume mounting in docker-compose
+
+Orchestration:
+- Docker Compose for multi-container apps
+- YAML configuration
+- Service scaling
+
+================================================================================
+8. VERIFICATION STEPS
+================================================================================
+
+To verify your setup, run these commands:
+
+Docker Version Check:
+---------------------
+docker --version
+docker-compose --version
+
+Running Containers:
+--------------------
+docker ps
+docker ps -a
+
+Image List:
+-----------
+docker images
+
+Container Logs:
+---------------
+docker logs <container-name>
+
+Docker Compose Status:
+----------------------
+docker-compose ps
+docker-compose logs
+
+Web Application Test:
+--------------------
+1. Start nginx container
+2. Open browser to http://localhost:8080
+3. Verify "Hello from Docker Container!" displays
+
+MySQL Test:
+----------
+docker-compose up -d
+docker exec -it compose-db mysql -u root -p
+Enter password: rootpass
+SHOW DATABASES;
+exit
+
+================================================================================
+END OF DOCUMENTATION
+================================================================================
+
+For more information, refer to:
+- Docker Official Documentation: https://docs.docker.com/
+- Docker Hub: https://hub.docker.com/
+- WAD Practical 2B PDF Guide: Docker_Container_Environment_Guide.pdf

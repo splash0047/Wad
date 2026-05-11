@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - '8080:80'
+    volumes:
+      - ./my-docker-app/index.html:/usr/share/nginx/html/index.html
+    container_name: compose-web
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: testdb
+    ports:
+      - '3306:3306'
+    container_name: compose-db
+
+volumes:
+  db_data:

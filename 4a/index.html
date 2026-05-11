@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Mobile App</title>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <style>
+        .ui-header .ui-title { margin: 0 10%; }
+        .app-icon { text-align: center; padding: 20px; }
+        .app-icon img { border-radius: 20px; width: 100px; height: 100px; }
+        .feature-list .ui-li-icon { max-height: 40px; max-width: 40px; }
+    </style>
+</head>
+<body>
+
+    <!-- Home Page -->
+    <div data-role="page" id="home">
+        <div data-role="header" data-theme="b">
+            <h1>My Mobile App</h1>
+            <a href="#menu" data-icon="bars" data-iconpos="notext" class="ui-btn-left">Menu</a>
+        </div>
+        <div data-role="content">
+            <div class="app-icon">
+                <img src="https://via.placeholder.com/100/0099ff/ffffff?text=APP" alt="App Icon">
+                <h2>Welcome!</h2>
+                <p>A simple jQuery Mobile website.</p>
+            </div>
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#about">
+                    <img src="https://via.placeholder.com/80/0099ff/ffffff?text=A" class="ui-li-icon" alt="About">
+                    <h2>About</h2>
+                    <p>Learn more about this app</p>
+                </a></li>
+                <li><a href="#services">
+                    <img src="https://via.placeholder.com/80/0099ff/ffffff?text=S" class="ui-li-icon" alt="Services">
+                    <h2>Services</h2>
+                    <p>What we offer</p>
+                </a></li>
+                <li><a href="#contact">
+                    <img src="https://via.placeholder.com/80/0099ff/ffffff?text=C" class="ui-li-icon" alt="Contact">
+                    <h2>Contact</h2>
+                    <p>Get in touch with us</p>
+                </a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed" data-theme="b">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-icon="home" class="ui-btn-active">Home</a></li>
+                    <li><a href="#about" data-icon="info">About</a></li>
+                    <li><a href="#services" data-icon="grid">Services</a></li>
+                    <li><a href="#contact" data-icon="mail">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div data-role="page" id="about">
+        <div data-role="header" data-theme="b">
+            <a href="#home" data-icon="back" data-direction="reverse">Back</a>
+            <h1>About</h1>
+            <a href="#menu" data-icon="bars" data-iconpos="notext" class="ui-btn-left">Menu</a>
+        </div>
+        <div data-role="content">
+            <h2>About This App</h2>
+            <p>This is a simple mobile website built with <strong>jQuery Mobile</strong>. It demonstrates:</p>
+            <ul>
+                <li>Multi-page structure</li>
+                <li>Fixed footer navigation</li>
+                <li>List views with icons</li>
+                <li>Responsive design</li>
+            </ul>
+            <p>jQuery Mobile makes it easy to build touch-friendly websites that work on all popular smartphones, tablets, and desktop devices.</p>
+        </div>
+        <div data-role="footer" data-position="fixed" data-theme="b">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-icon="home">Home</a></li>
+                    <li><a href="#about" data-icon="info" class="ui-btn-active">About</a></li>
+                    <li><a href="#services" data-icon="grid">Services</a></li>
+                    <li><a href="#contact" data-icon="mail">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Page -->
+    <div data-role="page" id="services">
+        <div data-role="header" data-theme="b">
+            <a href="#home" data-icon="back" data-direction="reverse">Back</a>
+            <h1>Services</h1>
+            <a href="#menu" data-icon="bars" data-iconpos="notext" class="ui-btn-left">Menu</a>
+        </div>
+        <div data-role="content">
+            <h2>Our Services</h2>
+            <div data-role="collapsible-set" data-theme="a" data-content-theme="d">
+                <div data-role="collapsible">
+                    <h3>Web Design</h3>
+                    <p>Beautiful and responsive web designs tailored to your brand and audience.</p>
+                </div>
+                <div data-role="collapsible">
+                    <h3>Development</h3>
+                    <p>Full-stack development using modern technologies and best practices.</p>
+                </div>
+                <div data-role="collapsible">
+                    <h3>Consulting</h3>
+                    <p>Expert advice to help your business grow and succeed online.</p>
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed" data-theme="b">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-icon="home">Home</a></li>
+                    <li><a href="#about" data-icon="info">About</a></li>
+                    <li><a href="#services" data-icon="grid" class="ui-btn-active">Services</a></li>
+                    <li><a href="#contact" data-icon="mail">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div data-role="page" id="contact">
+        <div data-role="header" data-theme="b">
+            <a href="#home" data-icon="back" data-direction="reverse">Back</a>
+            <h1>Contact</h1>
+            <a href="#menu" data-icon="bars" data-iconpos="notext" class="ui-btn-left">Menu</a>
+        </div>
+        <div data-role="content">
+            <h2>Contact Us</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" placeholder="Your Name">
+
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" placeholder="your@email.com">
+
+                <label for="message">Message:</label>
+                <textarea name="message" id="message" placeholder="Your message..."></textarea>
+
+                <button type="submit" data-theme="b">Send Message</button>
+            </form>
+            <br>
+            <ul data-role="listview" data-inset="true">
+                <li data-icon="phone"><a href="tel:+1234567890">Call Us</a></li>
+                <li data-icon="mail"><a href="mailto:info@example.com">Email Us</a></li>
+                <li data-icon="location"><a href="#">Visit Us</a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed" data-theme="b">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-icon="home">Home</a></li>
+                    <li><a href="#about" data-icon="info">About</a></li>
+                    <li><a href="#services" data-icon="grid">Services</a></li>
+                    <li><a href="#contact" data-icon="mail" class="ui-btn-active">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Panel -->
+    <div data-role="panel" id="menu" data-position="left" data-display="reveal" data-theme="a">
+        <h3>Menu</h3>
+        <ul data-role="listview">
+            <li><a href="#home" data-icon="home">Home</a></li>
+            <li><a href="#about" data-icon="info">About</a></li>
+            <li><a href="#services" data-icon="grid">Services</a></li>
+            <li><a href="#contact" data-icon="mail">Contact</a></li>
+        </ul>
+        <a href="#" data-rel="close" data-role="button" data-icon="delete" data-inline="true" data-mini="true">Close</a>
+    </div>
+
+</body>
+</html>
